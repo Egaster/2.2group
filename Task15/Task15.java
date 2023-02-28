@@ -6,6 +6,11 @@ public class Task15 {
         Scanner in = new Scanner(System.in);
         System.out.print("Введите размер треугольника Паскаля: ");
         int triangleSize = in.nextInt();
+        ArrayList<ArrayList<Integer>> pascalTriangle = generatePascalTriangle(triangleSize);
+        printTriangle(pascalTriangle);
+    }
+
+    private static ArrayList<ArrayList<Integer>> generatePascalTriangle(int triangleSize){
         ArrayList<ArrayList<Integer>> pascalTriangle = new ArrayList<>(triangleSize);
 
         for (int i = 0; i < triangleSize; i++){
@@ -20,12 +25,20 @@ public class Task15 {
                 pascalTriangle.get(i).set(j,value1+value2);
             }
         }
+        return pascalTriangle;
+    }
 
-        for (ArrayList<Integer> row: pascalTriangle){
-            for (Integer value: row){
-                System.out.print(value + " ");
+    private static void printTriangle(ArrayList<ArrayList<Integer>> pascalTriangle){
+        int numberOfRows = pascalTriangle.size();
+        for (int i = 0; i < numberOfRows; i++){
+            for (int j = 0; j < numberOfRows - i; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j < pascalTriangle.get(i).size(); j++){
+                System.out.print(" " + pascalTriangle.get(i).get(j));
             }
             System.out.println();
         }
     }
+
 }
