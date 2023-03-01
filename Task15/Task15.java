@@ -29,16 +29,33 @@ public class Task15 {
     }
 
     private static void printTriangle(ArrayList<ArrayList<Integer>> pascalTriangle){
+
         int numberOfRows = pascalTriangle.size();
-        for (int i = 0; i < numberOfRows; i++){
-            for (int j = 0; j < numberOfRows - i; j++) {
-                System.out.print(" ");
-            }
-            for (int j = 0; j < pascalTriangle.get(i).size(); j++){
-                System.out.print(" " + pascalTriangle.get(i).get(j));
-            }
-            System.out.println();
+        ArrayList<Integer> lastRow = pascalTriangle.get(numberOfRows - 1);
+        int largestElement = lastRow.get(lastRow.size() / 2);
+        int elementWidth = String.valueOf(largestElement).length();
+
+        int triangleWidth = formatRow(lastRow, elementWidth).length();
+
+        for (ArrayList<Integer> row : pascalTriangle){
+            System.out.println(centerString(formatRow(row, elementWidth),triangleWidth));
         }
+    }
+
+    private static String formatRow(ArrayList<Integer> row, int elementWidth){
+        StringBuilder resRow = new StringBuilder();
+        for (Integer element : row){
+            resRow.append(centerString(String.valueOf(element), elementWidth));
+            resRow.append(" ");
+        }
+        return resRow.toString();
+    }
+    private static String centerString(String str, int width){
+        int padSize = width - str.length();
+        int padStart = str.length() + padSize / 2;
+        String res = String.format("%" + padStart + "s", str);
+        res = String.format("%-" + width  + "s", res);
+        return res;
     }
 
 }
