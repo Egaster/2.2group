@@ -1,41 +1,44 @@
 import java.util.Scanner;
 
+
 public class Task7 {
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         System.out.println("Введите 2 числа в пределах от 0 до 65535: ");
+
         System.out.print("Введите первое число: ");
-        short var1 = (short) in.nextInt();
+        int var1 = (int) in.nextLong();
 
         System.out.print("Введите второе число: ");
-        short var2 = (short) in.nextInt();
+        int var2 = (int) in.nextLong();
 
-        //0x0000FFFF = 65535
+        final long shift = 0xFFFFFFFFL;
 
-        System.out.printf("Первое число как short:       %d , и как int: %10d\n",
-                var1, (0x0000FFFF & var1));
+        System.out.printf("Первое число как int: %d , и как long: %10d\n",
+                var1, (shift & var1));
 
-        System.out.printf("Второе число как short:       %d , и как int: %10d\n",
-                var2, (0x0000FFFF & var2));
+        System.out.printf("Второе число как int: %d , и как long: %10d\n",
+                var2, (shift & var2));
 
-        short sum = (short) ((0x0000FFFF & var1) + (0x0000FFFF & var2));
-        System.out.printf("Сумма чисел как short:        %6d , и как int: %10d\n",
-                sum, (0x0000FFFF & var1) + (0x0000FFFF & var2));
+        int sum = (int) ((shift & var1) + (shift & var2));
+        System.out.printf("Сумма чисел как int: %d , и как long: %10d\n",
+                sum, (shift & var1) + (shift & var2));
 
-        short diff = (short) ((0x0000FFFF & var1) - (0x0000FFFF & var2));
-        System.out.printf("Разность чисел как short:     %6d , и как int: %10d\n",
-                diff, (0x0000FFFF & var1) - (0x0000FFFF & var2));
+        int diff = (int) ((shift & var1) - (shift & var2));
+        System.out.printf("Разность чисел как int: %d , и как long: %10d\n",
+                diff, (shift & var1) - (shift & var2));
 
-        short mult = (short) ((0x0000FFFF & var1) * (0x0000FFFF & var2));
-        System.out.printf("Произведение чисел как short: %6d , и как int: %10d\n",
-                mult, (0x0000FFFF & var1) * (0x0000FFFF & var2));
+        int mult = (int) ((shift & var1) * (shift & var2));
+        System.out.printf("Произведение чисел как int: %d , и как long: %10d\n",
+                mult, (shift & var1) * (shift & var2));
 
-        short div = (short) ((0x0000FFFF & var1) / (0x0000FFFF & var2));
-        System.out.printf("Частное чисел как short:      %6d , и как int: %10d\n",
-                div, (0x0000FFFF & var1) / (0x0000FFFF & var2));
+        int div = (int) ((shift & var1) / (shift & var2));
+        System.out.printf("Частное чисел как int: %d , и как long: %10d\n",
+                div, (shift & var1) / (shift & var2));
 
-        short rem = (short) ((0x0000FFFF & var1) % (0x0000FFFF & var2));
-        System.out.printf("Остаток от деления как short: %6d , и как int: %10d\n",
-                rem, (0x0000FFFF & var1) % (0x0000FFFF & var2));
+        int rem = (int) ((shift & var1) % (shift & var2));
+        System.out.printf("Остаток от деления как int: %d , и как long: %10d\n",
+                rem, (shift & var1) % (shift & var2));
     }
 }
