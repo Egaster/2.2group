@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.time.LocalDateTime;
 
 public class Main13 {
-    private static final String PATH = "C:\\Users\\egast\\IdeaProjects\\lab2\\src\\main\\java\\lab2\\Task13\\addresses.csv";
+    private static final String PATH = "D:\\Study\\6 семестр\\Java Projects\\2.2group\\src\\main\\java\\lab2\\Task13\\addresses.csv";
 
     public static void main(String[] args) throws Exception {
         CSVReader reader = new CSVReader(new FileReader(PATH));
