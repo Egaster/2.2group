@@ -10,9 +10,14 @@ public class Rectangle {
     private final Point upLeft;
     private final Point downRight;
     public Rectangle(Point upLeft, Point downRight) throws Exception {
-        if (upLeft.getY() < downRight.getY()+EPS || downRight.getX() < upLeft.getX()+EPS){
-            throw new Exception("You entered points in wrong order!");
+        if (
+                upLeft.getY() < downRight.getY()+EPS || downRight.getX() < upLeft.getX()+EPS ||
+                Math.abs(upLeft.getX() - downRight.getX()) < EPS && Math.abs(upLeft.getY()- downRight.getY())<EPS
+           )
+        {
+            throw new Exception("Wrong input of points!");
         }
+
         else {
             this.upLeft = upLeft;
             this.downRight = downRight;

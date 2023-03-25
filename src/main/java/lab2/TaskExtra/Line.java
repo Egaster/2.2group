@@ -76,12 +76,14 @@ public class Line {
                                          liesBetween(c.getX(), d.getX(), b.getX()) && liesBetween(c.getY(), d.getY(), b.getY());
                 if (isIntersection){
                     result.add(true);
+                    //add max left end
                     if (b.getX() < a.getX()-EPS || Math.abs(b.getX()-a.getX())<EPS && b.getY()<a.getY()-EPS){
-                        result.add(b);
-                    }
-                    else {
                         result.add(a);
                     }
+                    else {
+                        result.add(b);
+                    }
+                    //add min right end
                     if (d.getX() < c.getX()-EPS || Math.abs(d.getX()-c.getX())<EPS && d.getY()<c.getY()-EPS){
                         result.add(d);
                     }
