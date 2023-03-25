@@ -1,11 +1,11 @@
 package lab2.TaskExtra;
 
-import lab2.Task5.Point;
-
 import java.util.ArrayList;
 
+import static lab2.TaskExtra.Point.EPS;
+
 public class Line {
-    static final double EPS = 1e-5;
+
 
     //ax + by + c = 0 - line equation
     private final double a;
@@ -50,9 +50,8 @@ public class Line {
         return new Line(a,b,c).normalize();  //returned normalized line equation
     }
 
-    private static boolean liesBetween(double left, double right, double value){  //check if x lies between left and right
-        return Math.min(left,right) <= value + EPS && value <= Math.max(left,right) + EPS;
-    }
+
+
     public static ArrayList<Object> intersect(Point a, Point b, Point c, Point d){
         ArrayList<Object> result = new ArrayList<>();
         Line line1 = normalizedLineEquation(a,b);
@@ -72,24 +71,27 @@ public class Line {
         if (Math.abs(det) < EPS) {  //det == 0
             if (Math.abs(det1) < EPS && Math.abs(det2) < EPS){  //det1==0 and det2==0 - lines match
                 //Add max left and min right end
-                boolean isIntersection = liesBetween(a.getX(), b.getX(), c.getX()) && liesBetween(a.getY(),b.getY(), c.getY()) &&
-                                         liesBetween(c.getX(), d.getX(), b.getX()) && liesBetween(c.getY(), d.getY(), b.getY());
+                boolean isIntersection = Point.pointLiesBetween(a, b, c) && Point.pointLiesBetween(c, d, b);
                 if (isIntersection){
                     result.add(true);
-                    //add max left end
-                    if (b.getX() < a.getX()-EPS || Math.abs(b.getX()-a.getX())<EPS && b.getY()<a.getY()-EPS){
-                        result.add(a);
+                    Point resA = Point.minPoint(a,b);
+                    Point resB = Point.maxPoint(a,b);
+                    Point resC = Point.minPoint(c,d);
+                    Point resD = Point.maxPoint(c,d);
+
+                    Point resLeftEnd = Point.maxPoint(resA, resC);
+                    Point resRightEnd = Point.minPoint(resB, resD);
+
+                    if (Point.comparePoints(resLeftEnd, resRightEnd) == 0) {
+                        result.add(resLeftEnd);
                     }
                     else {
-                        result.add(b);
+                        result.add(resLeftEnd);  //add max left end
+                        result.add(resRightEnd); //add min right end
                     }
-                    //add min right end
-                    if (d.getX() < c.getX()-EPS || Math.abs(d.getX()-c.getX())<EPS && d.getY()<c.getY()-EPS){
-                        result.add(d);
-                    }
-                    else {
-                        result.add(c);
-                    }
+                }
+                else {
+                    result.add(false);
                 }
             }
             else {
@@ -99,14 +101,12 @@ public class Line {
         else {  //det != 0
             double xRes = det1/det;
             double yRes = det2/det;
+            Point intersectOnePoint = new Point(xRes, yRes);
 
-            boolean isIntersection = liesBetween(a.getX(), b.getX(),xRes) &&
-                                   liesBetween(a.getY(), b.getY(), yRes) &&
-                                   liesBetween(c.getX(), d.getX(), xRes) &&
-                                   liesBetween(c.getY(), d.getY(), yRes);
+            boolean isIntersection = Point.pointLiesBetween(a, b, intersectOnePoint) && Point.pointLiesBetween(c, d, intersectOnePoint);
+
             if (isIntersection){
                 result.add(true);
-                Point intersectOnePoint = new Point(xRes, yRes);
                 result.add(intersectOnePoint);
             }
             else {

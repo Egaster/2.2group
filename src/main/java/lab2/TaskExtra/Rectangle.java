@@ -1,19 +1,16 @@
 package lab2.TaskExtra;
 
-import static lab2.TaskExtra.Line.EPS;
-
-import lab2.Task5.Point;
+import static lab2.TaskExtra.Point.comparePoints;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Rectangle {
     private final Point upLeft;
     private final Point downRight;
     public Rectangle(Point upLeft, Point downRight) throws Exception {
-        if (
-                upLeft.getY() < downRight.getY()+EPS || downRight.getX() < upLeft.getX()+EPS ||
-                Math.abs(upLeft.getX() - downRight.getX()) < EPS && Math.abs(upLeft.getY()- downRight.getY())<EPS
-           )
+        if (upLeft.equals(downRight) || comparePoints(upLeft, downRight) == 1)
         {
             throw new Exception("Wrong input of points!");
         }
@@ -43,7 +40,7 @@ public class Rectangle {
 
         return result;
     }
-    public static ArrayList<ArrayList<Object>> rectanglesIntersection(Rectangle rec1, Rectangle rec2){
+    public static ArrayList<ArrayList<Point>> rectanglesIntersection(Rectangle rec1, Rectangle rec2){
         ArrayList<ArrayList<Object>> result = new ArrayList<>();
 
         Point[][] rec1LineSegments = rec1.recSegments();
@@ -55,6 +52,38 @@ public class Rectangle {
                 result.add(intersect);
             }
         }
-        return result;
+        return filterResultOfRectanglesIntersection(result);
+    }
+
+    private static ArrayList<ArrayList<Point>> filterResultOfRectanglesIntersection(ArrayList<ArrayList<Object>> intersections){
+        ArrayList<ArrayList<Point>> filteredResult = new ArrayList<>();
+        Set<Point> uniquePoints = new HashSet<>();
+
+        for (ArrayList<Object> intersect: intersections){
+            if (intersect.size() == 3){
+                ArrayList<Point> segment = new ArrayList<>();
+                Point p1 = (Point) intersect.get(1);
+                Point p2 = (Point) intersect.get(2);
+                uniquePoints.add(p1);
+                uniquePoints.add(p2);
+                segment.add(p1);
+                segment.add(p2);
+                filteredResult.add(segment);
+            }
+        }
+        for (ArrayList<Object> intersect: intersections){
+            if (intersect.size() == 2){
+                Point p = (Point) intersect.get(1);
+                boolean isAddedToUniquePointsSet;
+                isAddedToUniquePointsSet = uniquePoints.add(p);
+
+                if (isAddedToUniquePointsSet){
+                    ArrayList<Point> segment = new ArrayList<>();
+                    segment.add(p);
+                    filteredResult.add(segment);
+                }
+            }
+        }
+        return filteredResult;
     }
 }
