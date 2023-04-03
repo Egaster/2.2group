@@ -71,7 +71,7 @@ public class Line {
         if (Math.abs(det) < EPS) {  //det == 0
             if (Math.abs(det1) < EPS && Math.abs(det2) < EPS){  //det1==0 and det2==0 - lines match
                 //Add max left and min right end
-                boolean isIntersection = Point.pointLiesBetween(a, b, c) && Point.pointLiesBetween(c, d, b);
+                boolean isIntersection = Point.pointLiesBetween(a, b, c) || Point.pointLiesBetween(c, d, a);
                 if (isIntersection){
                     result.add(true);
                     Point resA = Point.minPoint(a,b);

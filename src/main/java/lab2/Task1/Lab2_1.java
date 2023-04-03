@@ -17,37 +17,39 @@ public class Lab2_1 {
         LocalDate date = LocalDate.of(year, month, 1);
         System.out.print("Введите номер дня недели, с которого вы хотите начать исчисление календаря: ");
         int numDay = in.nextInt();
+        numDay %= 7;
+        numDay += 1;
         int k = numDay;
         for (int i = 1; i <=7 ; i++) {
-            switch (k){
-                case 1:
+            switch (k) {
+                case 1 -> {
                     System.out.print("Пн");
                     System.out.print("  ");
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.print("Вт");
                     System.out.print("  ");
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     System.out.print("Ср");
                     System.out.print("  ");
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.print("Чт");
                     System.out.print("  ");
-                    break;
-                case 5:
+                }
+                case 5 -> {
                     System.out.print("Пт");
                     System.out.print("  ");
-                    break;
-                case 6:
+                }
+                case 6 -> {
                     System.out.print("Сб");
                     System.out.print("  ");
-                    break;
-                case 7:
+                }
+                case 7 -> {
                     System.out.print("Вс");
                     System.out.print("  ");
-                    break;
+                }
             }
             if (k==7){
                 k = 1;

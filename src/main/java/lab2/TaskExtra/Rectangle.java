@@ -20,25 +20,17 @@ public class Rectangle {
             this.downRight = downRight;
         }
     }
-    public Point getUpLeft() {
-        return upLeft;
-    }
-    public Point getDownRight() {
-        return downRight;
-    }
 
     private Point[][] recSegments(){
         Point upLeftSameY = new Point(downRight.getX(),upLeft.getY());
         Point upLeftSameX = new Point(upLeft.getX(), downRight.getY());
 
-        Point[][] result = {
+        return new Point[][]{
                 {upLeft, upLeftSameY},
                 {upLeftSameX, downRight},
                 {upLeftSameX, upLeft},
                 {downRight, upLeftSameY}
         };
-
-        return result;
     }
     public static ArrayList<ArrayList<Point>> rectanglesIntersection(Rectangle rec1, Rectangle rec2){
         ArrayList<ArrayList<Object>> result = new ArrayList<>();
