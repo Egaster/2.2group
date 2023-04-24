@@ -20,6 +20,6 @@ public class Employee implements Measurable {
 
     @Override
     public String toString() {
-        return "{ name: " + name + ", salary: " + salary + '}';
+        return "{ name: " + name + ", salary: " + salary + "}\n";
     }
 }
