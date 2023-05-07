@@ -19,6 +19,21 @@ public interface CustomComparator<T> extends Comparator<T> {
         return (o1, o2) -> keyExtractor.apply(o1).compareTo(keyExtractor.apply(o2));
     }
 
+    static <T> CustomComparator<T> comparingInt(ToIntFunction<? super T> keyExtractor) {
+        Objects.requireNonNull(keyExtractor);
+        return (o1, o2) -> Integer.compare(keyExtractor.applyAsInt(o1), keyExtractor.applyAsInt(o2));
+    }
+
+    static <T> CustomComparator<T> comparingLong(ToLongFunction<? super T> keyExtractor) {
+        Objects.requireNonNull(keyExtractor);
+        return (o1, o2) -> Long.compare(keyExtractor.applyAsLong(o1), keyExtractor.applyAsLong(o2));
+    }
+
+    static<T> CustomComparator<T> comparingDouble(ToDoubleFunction<? super T> keyExtractor) {
+        Objects.requireNonNull(keyExtractor);
+        return (o1, o2) -> Double.compare(keyExtractor.applyAsDouble(o1), keyExtractor.applyAsDouble(o2));
+    }
+
     default CustomComparator<T> reversed() {
         return (o1, o2) -> compare(o2, o1);
     }
