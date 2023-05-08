@@ -22,10 +22,10 @@ public interface IntSequence {
 
                 private long number = finalRes;
 
-                @Override
-                public boolean hasNext() {
-                    return !(Long.toString(number).length() == 1 && number == 0);
-                }
+//                @Override
+//                public boolean hasNext() {
+//                    return !(Long.toString(number).length() == 1 && number == 0);
+//                }
 
                 @Override
                 public long next() {
@@ -35,10 +35,10 @@ public interface IntSequence {
                     return res;
                 }
 
-                @Override
-                public String toString() {
-                    return "{ number: " + number + '}';
-                }
+//                //@Override
+//                public String toString() {
+//                //    return "{ number: " + number + '}';
+//                }
             };
         }
         throw new NullPointerException("Not args");

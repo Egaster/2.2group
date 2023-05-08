@@ -17,13 +17,15 @@ public class MyIterator<T> implements Iterator<T> {
 
     public MyIterator<T> filter(Predicate<T> predicate) {
         return new MyIterator<>(new Iterator<>() {
-            private T next;
+            private T nextObject;  //next object in the iteration
+            private boolean nextObjectSet = false; //check if next object has been calculated
 
-            @Override
-            public boolean hasNext() {
+            private boolean setNextObject() {
                 while (iterator.hasNext()) {
-                    next = iterator.next();
-                    if (predicate.test(next)) {
+                    final T object = iterator.next();
+                    if (predicate.test(object)) {
+                        nextObject = object;
+                        nextObjectSet = true;
                         return true;
                     }
                 }
@@ -31,41 +33,55 @@ public class MyIterator<T> implements Iterator<T> {
             }
 
             @Override
+            public boolean hasNext() {
+                return nextObjectSet || setNextObject();
+            }
+
+            @Override
             public T next() {
-                if (next == null && !hasNext()) {
+                if (!nextObjectSet && !setNextObject()) {
                     throw new NoSuchElementException();
                 }
-                T result = next;
-                next = null;
-                return result;
+                nextObjectSet = false;
+                return nextObject;
             }
         });
     }
 
     public MyIterator<T> reduce(BiFunction<T, T, T> func) {
         return new MyIterator<>(new Iterator<>() {
-            private T next;
+            private T nextObject;  //next object in the iteration
+            private boolean nextObjectSet = false; //check if next object has been calculated
+
+            private boolean setNextObject() {
+                if (iterator.hasNext()) {
+                    final T object1 = iterator.next();
+                    if (iterator.hasNext()) {  //if object1 is not last in collection
+                        final T object2 = iterator.next();
+                        nextObject = func.apply(object1, object2);
+                    }
+                    else { //object1 is last in collection
+                        nextObject = func.apply(object1, object1);
+                    }
+                    nextObjectSet = true;
+                    return true;
+                }
+
+                return false;
+            }
 
             @Override
             public boolean hasNext() {
-                if (next == null && iterator.hasNext()) {
-                    next = iterator.next();
-                }
-                return iterator.hasNext();
+                return nextObjectSet || setNextObject();
             }
 
             @Override
             public T next() {
-                if (!hasNext()) {
+                if (!nextObjectSet && !setNextObject()) {
                     throw new NoSuchElementException();
                 }
-                T result = next;
-                next = null;
-                if (iterator.hasNext()) {
-                    T nextItem = iterator.next();
-                    result = func.apply(result, nextItem);
-                }
-                return result;
+                nextObjectSet = false;
+                return nextObject;
             }
         });
     }
