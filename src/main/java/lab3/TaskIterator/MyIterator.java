@@ -43,7 +43,7 @@ public class MyIterator<T> implements Iterator<T> {
     }
 
     public MyIterator<T> reduce(BiFunction<T, T, T> func) {
-        Iterator<T> reducedIterator = new Iterator<>() {
+        return new MyIterator<>(new Iterator<>() {
             private T next;
 
             @Override
@@ -67,8 +67,7 @@ public class MyIterator<T> implements Iterator<T> {
                 }
                 return result;
             }
-        };
-        return new MyIterator<>(reducedIterator);
+        });
     }
 
     public MyIterator<T> union(MyIterator<T> other) {
