@@ -33,6 +33,7 @@ public class Task9 {
         class2.otherClass = class1;
         Integer a = 4;
         System.out.println(toString(class1));
+        System.out.println(toString(class2));
         System.out.println(toString(a));
     }
 
