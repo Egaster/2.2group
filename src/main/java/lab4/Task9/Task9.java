@@ -1,44 +1,81 @@
 package lab4.Task9;
 
-import lab4.Task1.Point;
-import lab4.Task5.Rectangle;
-import lab4.Task5.Task5;
-
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.StringJoiner;
+import java.util.*;
+
 public class Task9 {
-    public static void main(String[] args) throws Exception {
-        Rectangle rectangle = new Rectangle(new Point(1, 1), 100, 50);
-        System.out.println(toString(rectangle));
-        System.out.println(toString("c"));
+    private static Set<Object> alreadyWatched;
+
+    private static final Set<Class<?>> BOX_TYPES;
+
+    static {
+        BOX_TYPES = new HashSet<>();
+
+        BOX_TYPES.add(Boolean.class);
+        BOX_TYPES.add(Character.class);
+        BOX_TYPES.add(Byte.class);
+        BOX_TYPES.add(Short.class);
+        BOX_TYPES.add(Integer.class);
+        BOX_TYPES.add(Long.class);
+        BOX_TYPES.add(Float.class);
+        BOX_TYPES.add(Double.class);
+        BOX_TYPES.add(Void.class);
     }
 
-//    public static String toString(Object o) throws Exception {
-//        Class<?> clazz = o.getClass();
-//        StringJoiner joiner = new StringJoiner(",", clazz.getName() + "{", "}");
-//        for (Field field : clazz.getDeclaredFields()) {
-//            field.setAccessible(true);
-//            joiner.add(field.getName() + "=" + field.get(o).toString());
-//        }
-//        return joiner.toString();
-//    }
+    public static boolean isBoxType(Class<?> clazz) {
+        return BOX_TYPES.contains(clazz);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Class1 class1 = new Class1();
+        Class2 class2 = new Class2();
+        class1.otherClass = class2;
+        class2.otherClass = class1;
+        Integer a = 4;
+        System.out.println(toString(class1));
+        System.out.println(toString(a));
+    }
 
 
-    public static String toString(Object o) throws Exception{
-        StringBuilder sb = new StringBuilder();
-        Class<?> clazz = o.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        sb.append(clazz.getSimpleName()).append("[");
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                sb.append(field.getName()).append("=").append(field.get(o)).append(", ");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+     public static String toString(Object object) throws IllegalAccessException {
+        boolean isFirst = false;
+        if (alreadyWatched == null) {
+            alreadyWatched = new HashSet<>();
+            isFirst = true;
+        }
+        if (alreadyWatched.contains(object)) {
+            return null;
+        }
+        alreadyWatched.add(object);
+        Class<?> clazz = object.getClass();
+        StringJoiner joiner = new StringJoiner(",", clazz.getName() + "{", "}");
+        if (clazz.isArray()) {
+            joiner.add(object.toString());
+        } else if (clazz.isPrimitive() || clazz.getSimpleName().equals("String") || isBoxType(clazz)) {
+            joiner.add(object.toString());
+        } else {
+            while (clazz != null) {
+                for (Field field : clazz.getDeclaredFields()) {
+                    field.setAccessible(true);
+                    Class<?> fieldType = field.getType();
+                    if (fieldType.isArray()) {
+                        joiner.add(field.getName() + "=" + field);
+                    } else if (fieldType.isPrimitive() || fieldType.getSimpleName().equals("String") || isBoxType(fieldType))
+                        joiner.add(field.getName() + "=" + field.get(object).toString());
+                    else {
+                        String result = toString(field.get(object));
+                        if (result != null) {
+                            joiner.add(result);
+                        }
+                    }
+                }
+                clazz = clazz.getSuperclass();
             }
         }
-        sb.delete(sb.length() - 2, sb.length()).append("]");
-        return sb.toString();
+
+        if (isFirst) {
+            alreadyWatched = null;
+        }
+        return joiner.toString();
     }
 }
