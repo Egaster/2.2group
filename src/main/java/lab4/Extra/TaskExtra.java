@@ -1,14 +1,19 @@
 package lab4.Extra;
 
+import lab3.Employee;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskExtra {
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        MyClass instance = set(MyClass.class, new Pair<>("field1", "value1"), new Pair<>("field2", 2));
+        MyClass instance = set(MyClass.class, new Pair<>("field1", "value1"), new Pair<>("field2", 2), new Pair<>("employees", List.of(new Employee("Fred", 123))));
 
         System.out.println(instance.getField1());
         System.out.println(instance.getField2());
+        System.out.println(instance.getEmployees());
     }
 
     @SafeVarargs
